@@ -1,11 +1,11 @@
-#include "Operation.h"
 #include "Hotel.h"
+#include "ConsoleEngine.h"
 #include <time.h>
 
 int main() {
-	Hotel nasko;
 	srand(time(NULL));
 
+	Hotel nasko;
 	int numOfRoom; int numOfGuests; String note;
 	Period period;
 	String periodString;
@@ -13,6 +13,10 @@ int main() {
 	String date1String, date2String;
 	Date date1, date2;
 	int beds;
+
+	ConsoleEngine milen;
+	milen.run();
+	
 
 
 	/*       COMMAND & DATE TEST

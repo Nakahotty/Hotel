@@ -14,7 +14,6 @@ private:
 		cout << "Wrong date formation!" << endl;
 	}
 public:
-
 	// Enter commands
 	static void enterComand(String& cmd);
 	static void enterNumOfRoom(int& numOfRoom);
@@ -40,4 +39,6 @@ public:
 	static bool isNumOfBedsValid(int& beds);
 	static bool isNumOfRoomValid(int& numOfRoom);
 	static bool isNumOFGuestsValid(int& numOfGuests);
+
+	
 };

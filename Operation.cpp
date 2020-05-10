@@ -1,4 +1,4 @@
-#include "Operation.h"
+	#include "Operation.h"
 
 void Operation::splitByTwo(const String& cmd, String& first, String& second) {
 	int spaceIndex = 0;

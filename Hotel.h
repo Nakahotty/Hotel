@@ -29,6 +29,11 @@ public:
 	Hotel(const Hotel& other);
 	Hotel operator= (const Hotel& other);
 
+	// Vector<String> enteredCommand = [checkin, 229, 2020-03-23, 2020-03-31, The, Simpsons, 3]; 
+	// etnerdCommand[1] = numOfRoom;
+	// enterCommand[2];
+	// note = entercommand[4] + entercommand[5];
+	
 	// Operations
 	void availability();
 	void availability(Period& period);
