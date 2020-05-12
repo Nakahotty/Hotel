@@ -48,10 +48,10 @@ void Hotel::availability(Period& period) {
 	cout << "Available room numbers: " << endl;
 	int numOfRooms = getNumOfRooms();
 
-	/*if (period.getDatesInPeriod().isEmpty()) {
+	if (!oneRoomIsReserved) {
 		cout << "All rooms are free!" << endl;
 		return;
-	}*/
+	}
 
 	cout << "Every room except " << endl;
 	for (size_t i = 0; i < numOfRooms; i++) {
@@ -75,6 +75,8 @@ void Hotel::checkin(int numOfRoom, Period& period, String& note, int numOfGuests
 	rooms[numOfRoom - 1].scheduleOnDates(period);
 	rooms[numOfRoom - 1].addGuests(numOfGuests);
 	cout << "Note - " << note << endl;
+
+	oneRoomIsReserved = 1;
 }
 
 void Hotel::report(Period period)

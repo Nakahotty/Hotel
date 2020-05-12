@@ -53,10 +53,10 @@ private:
 				else {
 					datesInPeriod.push_back(Date(from.getYear(), dayOfStartDate + i, monthOfStartDate));
 					
-					if (from == to) {
+					/*if (from == to) {
 						cout << "You reserved a room for 1 day!" << endl;
 						break;
-					}
+					}*/
 				}
 			}
 

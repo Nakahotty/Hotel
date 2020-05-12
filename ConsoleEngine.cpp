@@ -2,6 +2,15 @@
 
 void ConsoleEngine::run() {
 	bool exited = 0;
+	Hotel hotel;
+	int numOfRoom, numOfGuests = 0; 
+	String note;
+	Period period;
+	String periodString;
+	int year1, day1, month1, year2, day2, month2 = 0;
+	String date1String, date2String;
+	Date date1, date2;
+	int beds = 0;
 
 	do {
 		cin >> cmd;
@@ -48,25 +57,74 @@ void ConsoleEngine::run() {
 			break;
 		case 7:
 			// Checkin
+			cout << "Checking in guests..." << endl;
+			numOfRoom = arguments[1].toInteger();
+			date1String = arguments[2];
+			date2String = arguments[3];
+			note = arguments[4];
+			numOfGuests = arguments[5].toInteger();
 			
+			Operation::initPeriodFromCommand(period, year1, day1, month1, date1, date1String, year2, day2, month2, date2, date2String);
+			hotel.checkin(numOfRoom, period, note, numOfGuests);
+
 			break;
 		case 8:
 			// Availability
+			cout << "Getting available rooms..." << endl;
+
+			date1String = arguments[1];
+
+			Operation::initDateFromCommand(period, date1String, date1, year1, day1, month1);
+			hotel.availability(period);
 			break;
 		case 9:
 			// Checkout
+			cout << "Checking out room..." << endl;
+
+			numOfRoom = arguments[1].toInteger();
+			hotel.checkout(numOfRoom);
 			break;
 		case 10:
 			// Report
+			cout << "Getting report..." << endl;
+
+			date1String = arguments[1];
+			date2String = arguments[2];
+
+			Operation::initPeriodFromCommand(period, year1, day1, month1, date1, date1String, year2, day2, month2, date2, date2String);
+			hotel.report(period);
 			break;
 		case 11:
 			// Find
+			cout << "Finding an appropriate room ..." << endl;
+
+			beds = arguments[1].toInteger();
+			date1String = arguments[2];
+			date2String = arguments[3];
+
+			Operation::initPeriodFromCommand(period, year1, day1, month1, date1, date1String, year2, day2, month2, date2, date2String);
+			hotel.find(beds, period);
 			break;
 		case 12:
 			// Find important
+			cout << "Finding a room for an important person..." << endl;
+
+			beds = arguments[1].toInteger();
+			date1String = arguments[2];
+			date2String = arguments[3];
+
+			Operation::initPeriodFromCommand(period, year1, day1, month1, date1, date1String, year2, day2, month2, date2, date2String);
+			hotel.find_important(beds, period);
 			break;
 		case 13:
 			// Unavailable
+			numOfRoom = arguments[1].toInteger();
+			date1String = arguments[2];
+			date2String = arguments[3];
+			note = arguments[4];
+
+			Operation::initPeriodFromCommand(period, year1, day1, month1, date1, date1String, year2, day2, month2, date2, date2String);
+			hotel.unavailable(numOfRoom, period, note);
 			break;
 		default:
 			cout << "Invalid command entered!" << endl;
@@ -79,7 +137,7 @@ void ConsoleEngine::run() {
 String ConsoleEngine::subString(String text, int startPosition, int endPosition) {
 	String result;
 	for (size_t i = 0; i < endPosition - startPosition; i++) {
-		result[i] = text[startPosition + i];
+		result = result + text[startPosition + i];
 	}
 
 	result[endPosition - startPosition] = 0;
@@ -111,13 +169,23 @@ int ConsoleEngine::indexOf(String text, char letter)
 Vector<String> ConsoleEngine::split(String text)
 {
 	Vector<String> result;
-	while (countLetters(text, ' ')) {
+	int spaces = countLetters(text, ' ');
+
+	while (spaces) {
 		result.push_back(subString(text, 0, indexOf(text, ' ')));
 		text = subString(text, indexOf(text, ' ') + 1, text.length() + 1);
+
+		spaces--;
 	}
 
 	result.push_back(text);
 	return result;
+}
+
+int ConsoleEngine::toInt(String txt)
+{
+	int sum = 0;
+	return sum;
 }
 
 int ConsoleEngine::checkOperation(String cmd) {

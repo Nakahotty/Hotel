@@ -61,6 +61,12 @@ void Operation::splitByTwo(const String& cmd, String& first, String& second) {
 	
 }
 
+Operation::Operation(Hotel& hotel, int& numOfRoom, int& numOfGuests, String& note, Period& period, String& periodString, 
+	                 int& year1, int& day1, int& month1, int& year2, int& day2, int& month2, String& date1String, 
+	                 String& date2String, Date& date1, Date& date2, int& beds) {
+	
+}
+
 void Operation::enterComand(String& cmd) {
 	cout << "$ "; cin >> cmd;
 }
@@ -139,6 +145,25 @@ bool Operation::isNumOFGuestsValid(int& numOfGuests)
 	return numOfGuests >= 1 && numOfGuests <= 4;
 }
 
+void Operation::initPeriodFromCommand(Period& period, int& year1, int& day1, int& month1, Date& date1, String& dateString1, int& year2, int& day2, int& month2, Date& date2, String& dateString2)
+{
+	Operation::dateValidation(dateString1, year1, day1, month1);
+	date1 = Date(year1, day1, month1);
+
+	Operation::dateValidation(dateString2, year2, day2, month2);
+	date2 = Date(year2, day2, month2);
+
+	period = Period(date1, date2);
+}
+
+void Operation::initDateFromCommand(Period& period, String& periodString, Date& date, int& year, int& day, int& month)
+{
+	Operation::dateValidation(periodString, year, day, month);
+
+	date = Date(year, day, month);
+	period = Period(date);
+}
+
 void Operation::enterNumOfRoom(int& numOfRoom)
 {
 	cout << "Number of Room" << endl;
@@ -151,7 +176,7 @@ void Operation::enterNumOfRoom(int& numOfRoom)
 		
 }
 
-void Operation::enterPeriod(Period& period, String& periodString, Date& date, int& year, int& day, int& month) {
+void Operation::enterDate(Period& period, String& periodString, Date& date, int& year, int& day, int& month) {
 	cout << "Date " << endl;
 	cout << "$ ";
 

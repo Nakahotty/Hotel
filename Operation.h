@@ -4,23 +4,37 @@
 #include <ostream>
 #include "Vector.h"
 #include "String.h"
-#include "Date.h"
-#include "Period.h"
+#include "Hotel.h"
 #include <cassert>
+
 
 class Operation {
 private:
+	Hotel nasko;
+	int numOfRoom; int numOfGuests; String note;
+	Period period;
+	String periodString;
+	int year1, day1, month1, year2, day2, month2;
+	String date1String, date2String;
+	Date date1, date2;
+	int beds;
+
 	static void dateError() {
 		cout << "Wrong date formation!" << endl;
+		return;
 	}
 public:
+	Operation(Hotel& hotel, int& numOfRoom, int& numOfGuests, String& note, Period& period,
+			  String& periodString, int& year1, int& day1, int& month1, int& year2, int& day2, int& month2,
+			  String& date1String, String& date2String, Date& date1, Date& date2, int& beds);
+
 	// Enter commands
 	static void enterComand(String& cmd);
 	static void enterNumOfRoom(int& numOfRoom);
 	static void enterNote(String& note);
 	static void enterNumOfGuets(int& enterNumOfGuets);
 	static void enterBeds(int& beds);
-	static void enterPeriod(Period& period, String& periodString, Date& date, int& year, int& day, int& month);
+	static void enterDate(Period& period, String& periodString, Date& date, int& year, int& day, int& month);
 
 	// Modifying values
 	static void clearStats(int& numOfRoom, Period& period, String& periodString, String& note, int& numOfGuests,
@@ -40,5 +54,11 @@ public:
 	static bool isNumOfRoomValid(int& numOfRoom);
 	static bool isNumOFGuestsValid(int& numOfGuests);
 
+
+	// WITH CONSOLE ADDED 
+	static void initPeriodFromCommand(Period& period,
+		int& year1, int& day1, int& month1, Date& date1, String& dateString1,
+		int& year2, int& day2, int& month2, Date& date2, String& dateString2);
 	
+	static void initDateFromCommand(Period& period, String& periodString, Date& date, int& year, int& day, int& month);
 };

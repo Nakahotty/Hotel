@@ -25,7 +25,7 @@ public:
 	int indexOf(String text, char letter);
 	static String subString(String text, int startPosition, int endPosition);
 	Vector<String> split(String text);
-	//toInt();
+	int toInt(String txt);
 
 	// For switch
 	int checkOperation(String cmd);

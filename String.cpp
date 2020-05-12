@@ -55,7 +55,7 @@ String String::operator+ (char c)
     //a b c \0 X
     result.str[this->length()] = c;
     //a b c z X
-    result.str[this->length() + 1] = 0;
+    result.str[this->length() + 1] = '\0';
     //newBuffer ---->  a b c z \0
 
     return result;
@@ -145,15 +145,6 @@ void String::toLower()
 int String::toInteger() {
     int number = 0;
     number = std::atoi(this->str);
-
-    /*
-    for (size_t i = 0; this->str[i] != '\0'; i++) {
-        
-        if (str[i] >= '0' && str[i] <= '9') {
-            int x = (int)(str[i]);
-            number += x - 48;
-        }
-    }*/
 
     return number;
 }

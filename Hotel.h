@@ -12,10 +12,8 @@ private:
 	Date date;
 	String note;
 	const int numOfRooms = 100;
-	//	Vector<int> registeredRooms;
-
-	// Vector<Date> dates;
-	// Vector<ScheduleDates> 
+	
+	bool oneRoomIsReserved = 0;
 
 	void copy(const Hotel& other) {
 		this->name = other.name;
