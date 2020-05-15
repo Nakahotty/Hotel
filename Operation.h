@@ -19,9 +19,13 @@ private:
 	Date date1, date2;
 	int beds;
 
-	static void dateError() {
+	static void dateError(int& date_year) {
 		cout << "Wrong date formation!" << endl;
-		return;
+		setErroredYear(date_year);
+	}
+
+	static void setErroredYear(int& date_year) {
+		date_year = 0;
 	}
 public:
 	Operation(Hotel& hotel, int& numOfRoom, int& numOfGuests, String& note, Period& period,

@@ -78,19 +78,23 @@ int Room::getBeds() const
 	return this->beds;
 }
 
+Vector<Date>& Room::getScheduledDates() 
+{
+	return this->scheduledDates;
+}
+
 void Room::scheduleOnDates(Period& period)
 {
 	if (!isFreeDuringPeriod(period)) {
 		cout << "The room is taken during this period!" << endl;
 		return;
-	}
+	} 
 
 	Vector<Date> dates = period.getDatesInPeriod();
 	int daysBetweenPeriod = period.countDaysBetween();
 
 	for (size_t i = 0; i < daysBetweenPeriod; i++) {
 		this->scheduledDates.push_back(dates[i]);
-		dates[i].print();
 	}
 
 	this->setAvailability(0);
@@ -105,8 +109,9 @@ int Room::scheduledDatesSize()
 bool Room::isFreeDuringPeriod(Period& period)
 {
 	Vector<Date> dates = period.getDatesInPeriod();
+	int length = period.countDaysBetween();
 
-	for (size_t i = 0; i < dates.getSize(); i++) {
+	for (size_t i = 0; i < length; i++) {
 		if (scheduledDates.contains(dates[i]))
 			return false;
 	}

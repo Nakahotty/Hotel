@@ -6,60 +6,77 @@ private:
 	Date from;
 	Date to;
 	Vector<Date> datesInPeriod;
+	int fromDateYear, toDateYear;
+	bool initializedCorrectly;
 
 	void printDates() const {
-		cout << "You selected the dates " << endl;
+		if (fromDateYear == toDateYear) {
+			cout << "You selected the dates " << endl;
 
-		for (size_t i = 0; i < datesInPeriod.getSize(); i++) {
-			datesInPeriod[i].printHelper();
+			for (size_t i = 0; i < datesInPeriod.getSize(); i++) {
+				datesInPeriod[i].printHelper();
+			}
+
+			cout << endl;
 		}
-
-		cout << endl;
+		else {
+			cout << "Error while initializing dates!" << endl;
+		}
 	}
 
 	void initDates() {
-		int countDays = countDaysBetween();
+		if (fromDateYear == toDateYear) {
 
-		for (size_t i = 0; i <= countDays; i++) {
-			if (from.getYear() != to.getYear()) {
-				cout << "You cannot define periods accross years!" << endl;
-				break;
-			}
-			else if (from.getMonth() > to.getMonth()) {
-				cout << "Wrong month input!" << endl;
-			}
-			else {
-				if (countDays > 62) {
-					cout << "You cannot reserve for more than 2 months ahead!" << endl;
-					break;
-				}
+			int countDays = countDaysBetween();
 
-				int dayOfStartDate = from.getDay();
-				int monthOfStartDate = from.getMonth();
-				int helper;
+			if (countDays >= 0) {
+				for (size_t i = 0; i <= countDays; i++) {
+					if (from.getYear() != to.getYear()) {
+						cout << "You cannot define periods accross years!" << endl;
+						break;
+					}
+					else {
+						if (from.getMonth() > to.getMonth()) {
+							cout << "Wrong month input!" << endl;
+							break;
+						}
 
-				if (dayOfStartDate + i > 31) {
-					monthOfStartDate++;
-					helper = i - 31;
+						if (countDays > 62) {
+							cout << "You cannot reserve for more than 2 months ahead!" << endl;
+							break;
+						}
+
+						int dayOfStartDate = from.getDay();
+						int monthOfStartDate = from.getMonth();
+						int helper;
+
+						if (dayOfStartDate + i > 31) {
+							monthOfStartDate++;
+							helper = i - 31;
 
 
-					if (dayOfStartDate + helper > 31) {
-						monthOfStartDate++;
-						dayOfStartDate -= 31;
+							if (dayOfStartDate + helper > 31) {
+								monthOfStartDate++;
+								dayOfStartDate -= 31;
+							}
+
+							datesInPeriod.push_back(Date(from.getYear(), dayOfStartDate + helper, monthOfStartDate));
+						}
+						else {
+							datesInPeriod.push_back(Date(from.getYear(), dayOfStartDate + i, monthOfStartDate));
+
+							/*if (from == to) {
+								cout << "You reserved a room for 1 day!" << endl;
+								break;
+							}*/
+						}
 					}
 
-					datesInPeriod.push_back(Date(from.getYear(), dayOfStartDate + helper, monthOfStartDate));
-				}
-				else {
-					datesInPeriod.push_back(Date(from.getYear(), dayOfStartDate + i, monthOfStartDate));
-					
-					/*if (from == to) {
-						cout << "You reserved a room for 1 day!" << endl;
-						break;
-					}*/
-				}
+				} 
 			}
-
+			else {
+				initializedCorrectly = 0;
+			}
 		}
 	}
 
@@ -67,11 +84,20 @@ public:
 	Period() { 
 		from = Date();
 		to = Date();
+		initializedCorrectly = 1;
+
+		fromDateYear = from.getYear();
+		toDateYear = to.getYear();
+
 	};
 
 	Period(Date date) {
 		from = date;
 		to = date;
+
+		fromDateYear = from.getYear();
+		toDateYear = to.getYear();
+
 		
 		initDates();
 	}
@@ -80,8 +106,10 @@ public:
 		from = _from;
 		to = _to;
 
+		fromDateYear = from.getYear();
+		toDateYear = to.getYear();
+
 		initDates();
-		printDates();
 	}
 
 	Date& getDate() {
@@ -103,6 +131,22 @@ public:
 
 	const Vector<Date>& getDatesInPeriod() {
 		return datesInPeriod;
+	}
+
+	int getFromDateYear() const {
+		return from.getYear();
+	}
+
+	int getToDateYear() const {
+		return to.getYear();
+	}
+
+	void setInitializedCorrectly(bool correct) {
+		initializedCorrectly = correct;
+	}
+
+	bool wasInitializedCorrectly() const{
+		return initializedCorrectly;
 	}
 
 	int countDaysBetween() {

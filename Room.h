@@ -35,6 +35,7 @@ public:
 	void addGuests(const int numOfGuests);
 	bool isFreeOnDate(Period period);
 	int getBeds() const;
+	Vector<Date>& getScheduledDates();
 
 	void scheduleOnDates(Period& period);
 	int scheduledDatesSize();

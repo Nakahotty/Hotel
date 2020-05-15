@@ -75,59 +75,64 @@ void Operation::dateValidation(String& date, int& date_year, int& date_day, int&
 	int countDashes = 0;
 
 	if (date[0] == '\0') {
-		cout << "Wrong input!" << endl;
-		return;
-	}
-
-	for (size_t i = 0; i < date.length(); i++) {
-		if (date[i] == '-')
-			countDashes++;
-	}
-
-	if (countDashes != 2 || date.length() != 10) {
-		dateError();
-		return;
-	}
-
-	String yearString, dayString, monthString;
-	int firstDash = 0, secondDash = 0;
-
-	if (date[4] == '-') {
-		for (size_t i = 0; i < 4; i++) {
-			yearString = yearString + date[i];
-			firstDash++;
-		}
-
-		dayString = 0;
-		if (date[7] == '-') {
-			for (size_t i = 5; i < 7; i++) {
-				dayString = dayString + date[i];
-			}
-
-			for (size_t i = 8; i < 10; i++) {
-				monthString = monthString + date[i];
-			}
-		}
-		else {
-			dateError();
-		}
+		cout << "Wrong input for date entered!" << endl;
+		setErroredYear(date_year);
 	}
 	else {
-		dateError();
+		for (size_t i = 0; i < date.length(); i++) {
+			if (date[i] == '-')
+				countDashes++;
+		}
+
+		if (countDashes != 2 || date.length() != 10) {
+			dateError(date_year);
+		}
+		else {
+			String yearString, dayString, monthString;
+			int firstDash = 0, secondDash = 0;
+
+			if (date[4] != '-') {
+				dateError(date_year);
+			}
+			else {
+				for (size_t i = 0; i < 4; i++) {
+					yearString = yearString + date[i];
+					firstDash++;
+				}
+
+				dayString = 0;
+				if (date[7] != '-') {
+					dateError(date_year);
+				}
+				else {
+					for (size_t i = 5; i < 7; i++) {
+						dayString = dayString + date[i];
+					}
+
+					for (size_t i = 8; i < 10; i++) {
+						monthString = monthString + date[i];
+					}
+				}
+			}
+
+			date_year = yearString.toInteger();
+			date_day = dayString.toInteger();
+			date_month = monthString.toInteger();
+
+			if (date_year < 2019 ||
+				date_day < 1 ||
+				date_day > 31 ||
+				date_month < 1 ||
+				date_month > 12) {
+				cout << "Wrong input on either year/day/month." << endl;
+				setErroredYear(date_year);
+			}
+		}
 	}
 
-	date_year = yearString.toInteger();
-	date_day = dayString.toInteger();
-	date_month = monthString.toInteger();
+	
 
-
-	if (date_year < 2019 ||
-		date_day < 1 ||
-		date_day > 31 ||
-		date_month < 1 ||
-		date_month > 12) {
-		cout << "Wrong input on either year/day/month." << endl; return;
-	}
+	
 }
 
 bool Operation::isNumOfBedsValid(int& beds)
@@ -148,20 +153,26 @@ bool Operation::isNumOFGuestsValid(int& numOfGuests)
 void Operation::initPeriodFromCommand(Period& period, int& year1, int& day1, int& month1, Date& date1, String& dateString1, int& year2, int& day2, int& month2, Date& date2, String& dateString2)
 {
 	Operation::dateValidation(dateString1, year1, day1, month1);
-	date1 = Date(year1, day1, month1);
 
-	Operation::dateValidation(dateString2, year2, day2, month2);
-	date2 = Date(year2, day2, month2);
+	if (year1 != 0) {
+		date1 = Date(year1, day1, month1);
 
-	period = Period(date1, date2);
+		Operation::dateValidation(dateString2, year2, day2, month2);
+		if (year2 != 0) {
+			date2 = Date(year2, day2, month2);
+
+			period = Period(date1, date2);
+		}
+	}
 }
 
 void Operation::initDateFromCommand(Period& period, String& periodString, Date& date, int& year, int& day, int& month)
 {
 	Operation::dateValidation(periodString, year, day, month);
-
-	date = Date(year, day, month);
-	period = Period(date);
+	if (year != 0) {
+		date = Date(year, day, month);
+		period = Period(date);
+	}
 }
 
 void Operation::enterNumOfRoom(int& numOfRoom)
@@ -184,8 +195,10 @@ void Operation::enterDate(Period& period, String& periodString, Date& date, int&
 
 	Operation::dateValidation(periodString, year, day, month);
 
-	date = Date(year, day, month);
-	period = Period(date);
+	if (year != 0) {
+		date = Date(year, day, month);
+		period = Period(date);
+	}
 }
 
 void Operation::clearStats(int& numOfRoom, Period& period, String& periodString, String& note, int& numOfGuests, 

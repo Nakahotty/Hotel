@@ -18,6 +18,8 @@ public:
 	ConsoleEngine() { 
 		initCommands(); 
 	}
+
+	// Starting the hotel app
 	void run();
 
 	// Handling text

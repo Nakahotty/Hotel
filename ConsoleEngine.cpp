@@ -15,7 +15,6 @@ void ConsoleEngine::run() {
 	do {
 		cin >> cmd;
 		Vector<String> arguments = split(cmd);
-		arguments.print();
 
 		switch (checkOperation(cmd)) {
 		case 1:
@@ -57,21 +56,23 @@ void ConsoleEngine::run() {
 			break;
 		case 7:
 			// Checkin
-			cout << "Checking in guests..." << endl;
 			numOfRoom = arguments[1].toInteger();
 			date1String = arguments[2];
 			date2String = arguments[3];
-			note = arguments[4];
 			numOfGuests = arguments[5].toInteger();
-			
-			Operation::initPeriodFromCommand(period, year1, day1, month1, date1, date1String, year2, day2, month2, date2, date2String);
-			hotel.checkin(numOfRoom, period, note, numOfGuests);
+			note = arguments[4];
 
+			Operation::initPeriodFromCommand(period, year1, day1, month1, date1, date1String, year2, day2, month2, date2, date2String);
+
+			if (!(numOfGuests >= 1 && numOfGuests <= 5)) {
+				cout << "The note has to be one word or that was an error with the number of guests." << endl;
+				break;
+			}
+
+			hotel.checkin(numOfRoom, period, note, numOfGuests);
 			break;
 		case 8:
 			// Availability
-			cout << "Getting available rooms..." << endl;
-
 			date1String = arguments[1];
 
 			Operation::initDateFromCommand(period, date1String, date1, year1, day1, month1);
@@ -79,42 +80,54 @@ void ConsoleEngine::run() {
 			break;
 		case 9:
 			// Checkout
-			cout << "Checking out room..." << endl;
-
 			numOfRoom = arguments[1].toInteger();
 			hotel.checkout(numOfRoom);
+
 			break;
 		case 10:
 			// Report
-			cout << "Getting report..." << endl;
-
 			date1String = arguments[1];
 			date2String = arguments[2];
 
 			Operation::initPeriodFromCommand(period, year1, day1, month1, date1, date1String, year2, day2, month2, date2, date2String);
 			hotel.report(period);
+
 			break;
 		case 11:
 			// Find
-			cout << "Finding an appropriate room ..." << endl;
-
 			beds = arguments[1].toInteger();
 			date1String = arguments[2];
 			date2String = arguments[3];
 
 			Operation::initPeriodFromCommand(period, year1, day1, month1, date1, date1String, year2, day2, month2, date2, date2String);
-			hotel.find(beds, period);
+
+			if (period.countDaysBetween() < 0)
+				period.setInitializedCorrectly(0);
+
+			if (period.wasInitializedCorrectly())
+				hotel.find(beds, period);
+			else {
+				cout << "Wrong date input!" << endl;
+			}
+
 			break;
 		case 12:
 			// Find important
-			cout << "Finding a room for an important person..." << endl;
-
 			beds = arguments[1].toInteger();
 			date1String = arguments[2];
 			date2String = arguments[3];
 
 			Operation::initPeriodFromCommand(period, year1, day1, month1, date1, date1String, year2, day2, month2, date2, date2String);
-			hotel.find_important(beds, period);
+			
+			if (period.countDaysBetween() < 0)
+				period.setInitializedCorrectly(0);
+
+			if (period.wasInitializedCorrectly())
+				hotel.find_important(beds, period);
+			else {
+				cout << "Wrong date input!" << endl;
+			}
+
 			break;
 		case 13:
 			// Unavailable
@@ -124,6 +137,7 @@ void ConsoleEngine::run() {
 			note = arguments[4];
 
 			Operation::initPeriodFromCommand(period, year1, day1, month1, date1, date1String, year2, day2, month2, date2, date2String);
+
 			hotel.unavailable(numOfRoom, period, note);
 			break;
 		default:
@@ -147,7 +161,8 @@ String ConsoleEngine::subString(String text, int startPosition, int endPosition)
 int ConsoleEngine::countLetters(String text, char letter)
 {
 	int counter = 0;
-	for (size_t i = 0; i < text.length(); i++) {
+	int length = text.length();
+	for (size_t i = 0; i < length; i++) {
 		if (text[i] == letter)
 			counter++;
 	}
@@ -157,7 +172,8 @@ int ConsoleEngine::countLetters(String text, char letter)
 
 int ConsoleEngine::indexOf(String text, char letter)
 {
-	for (size_t i = 0; i < text.length(); i++) {
+	int length = text.length();
+	for (size_t i = 0; i < length; i++) {
 		if (text[i] == letter) {
 			return i;
 		}
@@ -174,7 +190,6 @@ Vector<String> ConsoleEngine::split(String text)
 	while (spaces) {
 		result.push_back(subString(text, 0, indexOf(text, ' ')));
 		text = subString(text, indexOf(text, ' ') + 1, text.length() + 1);
-
 		spaces--;
 	}
 
