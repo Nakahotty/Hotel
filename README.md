@@ -29,7 +29,3 @@ Aлгоритъм, който предлага спешно намиране н�
 - files input/output
 
 - acitivities(bonus)
-
-- some of the validations
-
-- command program (in a while(true))
