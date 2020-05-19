@@ -12,6 +12,9 @@ void ConsoleEngine::run() {
 	Date date1, date2;
 	int beds = 0;
 
+	ofstream out;
+	ifstream in;
+
 	do {
 		cin >> cmd;
 		Vector<String> arguments = split(cmd);
@@ -19,19 +22,86 @@ void ConsoleEngine::run() {
 		switch (checkOperation(cmd)) {
 		case 1:
 			// Open
-			cout << "Opening file..." << endl;
+			if (arguments.getSize() > 1 && !(arguments[1] == '\0')) {
+				String fileName = arguments[1];
+
+				if (in.is_open() || out.is_open()) {
+					cout << "File already opened!" << endl;
+				}
+				else {
+					out.open(fileName.c_str(), ios::app);
+					in.open(fileName.c_str());
+
+					if (!(is_empty(in))) {
+						hotel.loadHotel(in);
+					}
+					else {
+						hotel.saveHotel(out);
+					}
+
+					in.close();
+
+					if (out.is_open()) {
+						cout << "Opening file " << fileName << "..." << endl;
+					}
+				}
+			}
+			else {
+				cout << "Missing arguments!" << endl;
+			}
+
 			break;
 		case 2:
 			// Close
-			cout << "Closing file..." << endl;
+			if (arguments.getSize() > 1 && !(arguments[1] == '\0')) {
+				String fileName = arguments[1];
+
+				// нулирай хотела
+				if (out.is_open()) {
+					cout << "Closing file " << fileName << "..." << endl;
+					out.close();
+				}
+				else {
+					cout << "No file is opened!" << endl;
+				}
+
+			}
+			else {
+				cout << "Missing arguments!" << endl;
+			}
+
 			break;
 		case 3:
 			// Save
-			cout << "Saving file..." << endl;
+			if (arguments.getSize() > 1 && !(arguments[1] == '\0')) {
+				String fileName = arguments[1];
+
+				if (out.is_open()) {
+					cout << "Saving file..." << endl;
+					out.close();
+					out.open(fileName.c_str(), ios::trunc);
+
+					hotel.saveHotel(out);
+				}
+				else {
+					cout << "No file is opened" << endl;
+				}
+				
+			}
+			else {
+				cout << "Missing arguments!" << endl;
+			}
+			
 			break;
 		case 4:
 			// Save as
-			cout << "Saving file as..." << endl;
+			if (arguments.getSize() > 1 && !(arguments[1] == '\0')) {
+				cout << "Saving file as..." << endl;
+			}
+			else {
+				cout << "Missing arguments!" << endl;
+			}
+
 			break;
 		case 5:
 			// Help
@@ -56,89 +126,132 @@ void ConsoleEngine::run() {
 			break;
 		case 7:
 			// Checkin
-			numOfRoom = arguments[1].toInteger();
-			date1String = arguments[2];
-			date2String = arguments[3];
-			numOfGuests = arguments[5].toInteger();
-			note = arguments[4];
+			if (out.is_open()) {
+				numOfRoom = arguments[1].toInteger();
+				date1String = arguments[2];
+				date2String = arguments[3];
+				numOfGuests = arguments[5].toInteger();
+				note = arguments[4];
 
-			Operation::initPeriodFromCommand(period, year1, day1, month1, date1, date1String, year2, day2, month2, date2, date2String);
+				Operation::initPeriodFromCommand(period, year1, day1, month1, date1, date1String, year2, day2, month2, date2, date2String);
 
-			if (!(numOfGuests >= 1 && numOfGuests <= 5)) {
-				cout << "The note has to be one word or that was an error with the number of guests." << endl;
-				break;
+				if (!(numOfGuests >= 1 && numOfGuests <= 5)) {
+					cout << "The note has to be one word or that was an error with the number of guests." << endl;
+					break;
+				}
+
+				hotel.checkin(numOfRoom, period, note, numOfGuests);
+			}
+			else {
+				cout << "You have to open a file to enter this command!" << endl;
 			}
 
-			hotel.checkin(numOfRoom, period, note, numOfGuests);
 			break;
 		case 8:
 			// Availability
-			date1String = arguments[1];
+			if (out.is_open()) {
+				date1String = arguments[1];
 
-			Operation::initDateFromCommand(period, date1String, date1, year1, day1, month1);
-			hotel.availability(period);
+				if (arguments.getSize() > 1) {
+					Operation::initDateFromCommand(period, date1String, date1, year1, day1, month1);
+					hotel.availability(period);
+				}
+				else {
+					cout << "Missing arguments!" << endl;
+				}
+			}
+			else {
+				cout << "You have to open a file to enter this command!" << endl;
+			}
+
 			break;
 		case 9:
 			// Checkout
-			numOfRoom = arguments[1].toInteger();
-			hotel.checkout(numOfRoom);
+			if (out.is_open()) {
+				numOfRoom = arguments[1].toInteger();
+				hotel.checkout(numOfRoom);
+			}
+			else {
+				cout << "You have to open a file to enter this command!" << endl;
+			}
 
 			break;
 		case 10:
 			// Report
-			date1String = arguments[1];
-			date2String = arguments[2];
+			if (out.is_open()) {
+				date1String = arguments[1];
+				date2String = arguments[2];
 
-			Operation::initPeriodFromCommand(period, year1, day1, month1, date1, date1String, year2, day2, month2, date2, date2String);
-			hotel.report(period);
+				Operation::initPeriodFromCommand(period, year1, day1, month1, date1, date1String, year2, day2, month2, date2, date2String);
+				hotel.report(period);
+			}
+			else {
+				cout << "You have to open a file to enter this command!" << endl;
+			}
 
 			break;
 		case 11:
 			// Find
-			beds = arguments[1].toInteger();
-			date1String = arguments[2];
-			date2String = arguments[3];
+			if (out.is_open()) {
+				beds = arguments[1].toInteger();
+				date1String = arguments[2];
+				date2String = arguments[3];
 
-			Operation::initPeriodFromCommand(period, year1, day1, month1, date1, date1String, year2, day2, month2, date2, date2String);
+				Operation::initPeriodFromCommand(period, year1, day1, month1, date1, date1String, year2, day2, month2, date2, date2String);
 
-			if (period.countDaysBetween() < 0)
-				period.setInitializedCorrectly(0);
+				if (period.countDaysBetween() < 0)
+					period.setInitializedCorrectly(0);
 
-			if (period.wasInitializedCorrectly())
-				hotel.find(beds, period);
-			else {
-				cout << "Wrong date input!" << endl;
+				if (period.wasInitializedCorrectly())
+					hotel.find(beds, period);
+				else {
+					cout << "Wrong date input!" << endl;
+				}
 			}
-
+			else {
+				cout << "You have to open a file to enter this command!" << endl;
+			}
+			
 			break;
 		case 12:
 			// Find important
-			beds = arguments[1].toInteger();
-			date1String = arguments[2];
-			date2String = arguments[3];
+			if (out.is_open()) {
+				beds = arguments[1].toInteger();
+				date1String = arguments[2];
+				date2String = arguments[3];
 
-			Operation::initPeriodFromCommand(period, year1, day1, month1, date1, date1String, year2, day2, month2, date2, date2String);
-			
-			if (period.countDaysBetween() < 0)
-				period.setInitializedCorrectly(0);
+				Operation::initPeriodFromCommand(period, year1, day1, month1, date1, date1String, year2, day2, month2, date2, date2String);
 
-			if (period.wasInitializedCorrectly())
-				hotel.find_important(beds, period);
+				if (period.countDaysBetween() < 0)
+					period.setInitializedCorrectly(0);
+
+				if (period.wasInitializedCorrectly())
+					hotel.find_important(beds, period);
+				else {
+					cout << "Wrong date input!" << endl;
+				}
+			}
 			else {
-				cout << "Wrong date input!" << endl;
+				cout << "You have to open a file to enter this command!" << endl;
 			}
 
 			break;
 		case 13:
 			// Unavailable
-			numOfRoom = arguments[1].toInteger();
-			date1String = arguments[2];
-			date2String = arguments[3];
-			note = arguments[4];
+			if (out.is_open()) {
+				numOfRoom = arguments[1].toInteger();
+				date1String = arguments[2];
+				date2String = arguments[3];
+				note = arguments[4];
 
-			Operation::initPeriodFromCommand(period, year1, day1, month1, date1, date1String, year2, day2, month2, date2, date2String);
+				Operation::initPeriodFromCommand(period, year1, day1, month1, date1, date1String, year2, day2, month2, date2, date2String);
 
-			hotel.unavailable(numOfRoom, period, note);
+				hotel.unavailable(numOfRoom, period, note);
+			}
+			else {
+				cout << "You have to open a file to enter this command!" << endl;
+			}
+
 			break;
 		default:
 			cout << "Invalid command entered!" << endl;

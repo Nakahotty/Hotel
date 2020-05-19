@@ -31,4 +31,8 @@ public:
 
 	// For switch
 	int checkOperation(String cmd);
+	bool is_empty(ifstream& pFile)
+	{
+		return pFile.peek() == ifstream::traits_type::eof();
+	}
 };
