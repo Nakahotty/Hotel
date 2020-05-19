@@ -8,10 +8,7 @@ Hotel::Hotel() {
 	for (size_t i = 0; i < getNumOfRooms(); i++) {
 		this->rooms.push_back(Room(1 + i, 0, 1));
 	}
-
 	this->note = "No note given";
-
-	// отвори поток към файла
 }
 
 Hotel::Hotel(const String name, Vector<Room> rooms, int guests, String note, const Date date) {
@@ -34,11 +31,6 @@ Hotel Hotel::operator=(const Hotel& other)
 	}
 
 	return *this;
-}
-
-Hotel::~Hotel()
-{
-	// запазва данните
 }
 
 void Hotel::availability() {
@@ -251,40 +243,4 @@ int Hotel::getNumOfRooms() {
 int Hotel::getRoomNum(int numOfRoom)
 {
 	return rooms[numOfRoom-1].getRoomNum();
-}
-
-void Hotel::initStreams(ofstream& _out, ifstream& _in)
-{
-	
-}
-
-ofstream& Hotel::saveHotel(ofstream& out) const
-{
-	out << "Hotel " << this->name << endl;
-	out << "Rooms: " << this->numOfRooms << endl;
-	for (size_t i = 0; i < this->numOfRooms; i++) {
-		this->rooms[i].saveRoom(out);
-	}
-
-	return out;
-}
-
-ifstream& Hotel::loadHotel(ifstream& in)
-{
-	// For the num of rooms
-	int size = 0;
-
-	in.seekg(6, ios::cur);
-	in >> name;
-	in.seekg(9, ios::cur);
-	in >> size;
-	in.seekg(2, ios::cur);
-
-	for (size_t i = 0; i < size; i++) {
-		Room room;
-		room.loadRoom(in);
-		this->rooms[i] = room;
-	}
-
-	return in;
 }

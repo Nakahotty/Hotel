@@ -40,10 +40,4 @@ public:
 	void scheduleOnDates(Period& period);
 	int scheduledDatesSize();
 	bool isFreeDuringPeriod(Period& period);
-
-	ofstream& saveScheduledDates(ofstream& out) const;
-	ifstream& loadScheduledDates(ifstream& in);
-
-	ofstream& saveRoom(ofstream& out) const;
-	ifstream& loadRoom(ifstream& in);
 };

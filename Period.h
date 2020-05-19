@@ -6,9 +6,6 @@ private:
 	Date from;
 	Date to;
 	Vector<Date> datesInPeriod;
-
-
-
 	int fromDateYear, toDateYear;
 	bool initializedCorrectly;
 
@@ -192,32 +189,5 @@ public:
 
 	bool operator !=(const Period& other) {
 		return !(*this == other);
-	}
-
-	ofstream& savePeriod(ofstream& out) {
-		
-		from.saveDate(out);
-		to.saveDate(out);
-
-		int size = datesInPeriod.getSize();
-		for (size_t i = 0; i < size; i++) {
-			datesInPeriod[i].saveDate(out);
-		}
-		
-		return out;
-	}
-
-	ifstream& loadPeriod(ifstream& in) {
-
-		from.loadDate(in);
-		to.loadDate(in);
-
-		int size = datesInPeriod.getSize();
-
-		for (size_t i = 0; i < size; i++) {
-			datesInPeriod[i].loadDate(in);
-		}
-
-		return in;
 	}
 };

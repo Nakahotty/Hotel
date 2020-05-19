@@ -77,21 +77,4 @@ public:
 	int length() const {
 		return this->dateLength;
 	}
-
-	// File input/output
-	ostream& saveDate(ostream& out) const {
-		out << this->year << "/" << this->day << "/" << this->month << endl;
-		return out;
-	}
-
-	ifstream& loadDate(ifstream& in) {
-		in >> this->year;
-		in.seekg(1, ios::cur);
-		in >> this->day;
-		in.seekg(1, ios::cur);
-		in >> this->month;
-		in.seekg(1, ios::cur);
-
-		return in;
-	}
 };
