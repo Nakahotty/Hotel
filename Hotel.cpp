@@ -61,10 +61,10 @@ void Hotel::availability(Period& period) {
 			cout << "Available room numbers: " << endl;
 			int numOfRooms = getNumOfRooms();
 
-			if (!oneRoomIsReserved) {
+			/*if (!oneRoomIsReserved) {
 				cout << "All rooms are free!" << endl;
 				return;
-			}
+			}*/
 
 			cout << "Every room except " << endl;
 			for (size_t i = 0; i < numOfRooms; i++) {
@@ -143,7 +143,6 @@ void Hotel::report(Period period)
 				}
 
 				if (!(rooms[i].isFreeDuringPeriod(period))) {
-					cout << "I GOT HERE ." << endl;
 					rooms[i].print();
 				}
 			}
@@ -253,15 +252,17 @@ int Hotel::getRoomNum(int numOfRoom)
 	return rooms[numOfRoom-1].getRoomNum();
 }
 
-void Hotel::initStreams(ofstream& _out, ifstream& _in)
+void Hotel::setOneRoomReserved(bool reserved)
 {
-	
+	this->oneRoomIsReserved = reserved;
 }
+
 
 ofstream& Hotel::saveHotel(ofstream& out) const
 {
 	out << "Hotel " << this->name << endl;
-	out << "Rooms: " << this->numOfRooms << endl;
+	out << "Rooms: " << this->numOfRooms << endl << endl;
+
 	for (size_t i = 0; i < this->numOfRooms; i++) {
 		this->rooms[i].saveRoom(out);
 	}
@@ -274,17 +275,26 @@ ifstream& Hotel::loadHotel(ifstream& in)
 	// For the num of rooms
 	int size = 0;
 
-	in.seekg(6, ios::cur);
+	in.seekg(6, ios::cur); 
 	in >> name;
-	in.seekg(9, ios::cur);
+	in.seekg(7, ios::cur);
 	in >> size;
 	in.seekg(2, ios::cur);
 
 	for (size_t i = 0; i < size; i++) {
-		Room room;
-		room.loadRoom(in);
-		this->rooms[i] = room;
+		if (i == 0) {
+			in.seekg(2, ios::cur);
+			Room room;
+			room.loadRoom(in);
+			this->rooms[i] = room;
+		}
+		else {
+			Room room;
+			room.loadRoom(in);
+			this->rooms[i] = room;
+		}
 	}
+
 
 	return in;
 }

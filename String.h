@@ -29,7 +29,7 @@ public:
     bool contains(String& other);
     void toLower();
     int toInteger();
-    char* c_str() const {
+    char* c_str() {
         return this->str;
     }
 };

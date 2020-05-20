@@ -45,8 +45,7 @@ public:
 	void printRoom(int numOfRoom);
 	int getNumOfRooms();
 	int getRoomNum(int numOfRoom);
-
-	void initStreams(ofstream& _out, ifstream& _in);
+	void setOneRoomReserved(bool resereved);
 	ofstream& saveHotel(ofstream& out) const;
 	ifstream& loadHotel(ifstream& in);
 };

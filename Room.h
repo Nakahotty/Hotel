@@ -12,15 +12,15 @@ private:
 	int roomGuests;
 	bool free;
 	int beds;
+	Vector<Date> scheduledDates;
 
 	void copy(const Room& other) {
 		this->roomNum = other.roomNum;
 		this->roomGuests = other.roomGuests;
 		this->free = other.free;
 		this->beds = other.beds;
+		this->scheduledDates = other.scheduledDates;
 	}
-
-	Vector<Date> scheduledDates;
 public:
 	Room();
 	Room(const int roomNum, const int RoomGuests, const bool free);

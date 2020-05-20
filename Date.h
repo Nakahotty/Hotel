@@ -80,7 +80,7 @@ public:
 
 	// File input/output
 	ostream& saveDate(ostream& out) const {
-		out << this->year << "/" << this->day << "/" << this->month << endl;
+		out << this->year << "-" << this->day << "-" << this->month << endl;
 		return out;
 	}
 
@@ -90,7 +90,7 @@ public:
 		in >> this->day;
 		in.seekg(1, ios::cur);
 		in >> this->month;
-		in.seekg(1, ios::cur);
+
 
 		return in;
 	}

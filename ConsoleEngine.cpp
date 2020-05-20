@@ -12,8 +12,11 @@ void ConsoleEngine::run() {
 	Date date1, date2;
 	int beds = 0;
 
+	// Files
 	ofstream out;
 	ifstream in;
+	String fileNameOpened;
+	String fileName;
 
 	do {
 		cin >> cmd;
@@ -23,7 +26,8 @@ void ConsoleEngine::run() {
 		case 1:
 			// Open
 			if (arguments.getSize() > 1 && !(arguments[1] == '\0')) {
-				String fileName = arguments[1];
+				fileName = arguments[1];
+				fileNameOpened = fileName;
 
 				if (in.is_open() || out.is_open()) {
 					cout << "File already opened!" << endl;
@@ -34,12 +38,12 @@ void ConsoleEngine::run() {
 
 					if (!(is_empty(in))) {
 						hotel.loadHotel(in);
+						in.close();
 					}
 					else {
 						hotel.saveHotel(out);
 					}
 
-					in.close();
 
 					if (out.is_open()) {
 						cout << "Opening file " << fileName << "..." << endl;
@@ -54,7 +58,7 @@ void ConsoleEngine::run() {
 		case 2:
 			// Close
 			if (arguments.getSize() > 1 && !(arguments[1] == '\0')) {
-				String fileName = arguments[1];
+				fileName = arguments[1];
 
 				// нулирай хотела
 				if (out.is_open()) {
@@ -73,30 +77,24 @@ void ConsoleEngine::run() {
 			break;
 		case 3:
 			// Save
-			if (arguments.getSize() > 1 && !(arguments[1] == '\0')) {
-				String fileName = arguments[1];
+			if (out.is_open()) {
+				cout << "Saving file..." << endl;
+				out.close();
 
-				if (out.is_open()) {
-					cout << "Saving file..." << endl;
-					out.close();
-					out.open(fileName.c_str(), ios::trunc);
-
-					hotel.saveHotel(out);
-				}
-				else {
-					cout << "No file is opened" << endl;
-				}
-				
+				out.open(fileNameOpened.c_str(), ios::trunc);
+				hotel.saveHotel(out);
 			}
 			else {
-				cout << "Missing arguments!" << endl;
+				cout << "No file is opened" << endl;
 			}
 			
 			break;
 		case 4:
 			// Save as
+			fileName = arguments[1];
+
 			if (arguments.getSize() > 1 && !(arguments[1] == '\0')) {
-				cout << "Saving file as..." << endl;
+				cout << "Saving file as" <<  fileName << "..." << endl;
 			}
 			else {
 				cout << "Missing arguments!" << endl;
@@ -139,7 +137,7 @@ void ConsoleEngine::run() {
 					cout << "The note has to be one word or that was an error with the number of guests." << endl;
 					break;
 				}
-
+					
 				hotel.checkin(numOfRoom, period, note, numOfGuests);
 			}
 			else {
