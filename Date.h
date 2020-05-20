@@ -2,7 +2,7 @@
 #include <iostream>
 #include "String.h"
 
-using namespace std; 
+using namespace std;
 
 class Date {
 private:
@@ -39,8 +39,8 @@ public:
 
 	bool operator==(const Date& other) {
 		return (this->year == other.year &&
-				this->month == other.month &&
-				this->day == other.day);	
+			this->month == other.month &&
+			this->day == other.day);
 	}
 
 	int getYear() const {
@@ -76,5 +76,22 @@ public:
 
 	int length() const {
 		return this->dateLength;
+	}
+
+	// File input/output
+	ostream& saveDate(ostream& out) const {
+		out << this->year << "-" << this->day << "-" << this->month << endl;
+		return out;
+	}
+
+	ifstream& loadDate(ifstream& in) {
+		in >> this->year;
+		in.seekg(1, ios::cur);
+		in >> this->day;
+		in.seekg(1, ios::cur);
+		in >> this->month;
+
+
+		return in;
 	}
 };

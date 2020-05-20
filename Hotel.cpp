@@ -8,7 +8,10 @@ Hotel::Hotel() {
 	for (size_t i = 0; i < getNumOfRooms(); i++) {
 		this->rooms.push_back(Room(1 + i, 0, 1));
 	}
+
 	this->note = "No note given";
+
+	// отвори поток към файла
 }
 
 Hotel::Hotel(const String name, Vector<Room> rooms, int guests, String note, const Date date) {
@@ -33,6 +36,11 @@ Hotel Hotel::operator=(const Hotel& other)
 	return *this;
 }
 
+Hotel::~Hotel()
+{
+	// запазва данните
+}
+
 void Hotel::availability() {
 	/*cout << "List of free rooms (numbers): " << endl;
 
@@ -48,15 +56,15 @@ void Hotel::availability(Period& period) {
 	int fromDateYear = period.getFromDateYear();
 	int toDateYear = period.getToDateYear();
 
-	if (fromDateYear != 1970 && toDateYear != 1970 && fromDateYear != 0 && toDateYear !=0) {
+	if (fromDateYear != 1970 && toDateYear != 1970 && fromDateYear != 0 && toDateYear != 0) {
 		if (fromDateYear == toDateYear) {
 			cout << "Available room numbers: " << endl;
 			int numOfRooms = getNumOfRooms();
 
-			if (!oneRoomIsReserved) {
+			/*if (!oneRoomIsReserved) {
 				cout << "All rooms are free!" << endl;
 				return;
-			}
+			}*/
 
 			cout << "Every room except " << endl;
 			for (size_t i = 0; i < numOfRooms; i++) {
@@ -68,7 +76,7 @@ void Hotel::availability(Period& period) {
 		}
 	}
 
-	
+
 }
 
 void Hotel::checkout(int numOfRoom) {
@@ -92,7 +100,7 @@ void Hotel::checkout(int numOfRoom) {
 		cout << "Enter a valid room number!" << endl;
 	}
 
-	
+
 }
 
 void Hotel::checkin(int numOfRoom, Period& period, String& note, int numOfGuests) {
@@ -116,7 +124,7 @@ void Hotel::checkin(int numOfRoom, Period& period, String& note, int numOfGuests
 		}
 	}
 }
-	
+
 
 void Hotel::report(Period period)
 {
@@ -135,7 +143,6 @@ void Hotel::report(Period period)
 				}
 
 				if (!(rooms[i].isFreeDuringPeriod(period))) {
-					cout << "I GOT HERE ." << endl;
 					rooms[i].print();
 				}
 			}
@@ -145,7 +152,7 @@ void Hotel::report(Period period)
 			}
 		}
 	}
-	
+
 }
 
 void Hotel::find(int beds, Period period) {
@@ -202,7 +209,7 @@ void Hotel::find_important(int beds, Period period) {
 				}
 			}
 		}
-	}	
+	}
 }
 
 void Hotel::unavailable(int numOfRoom, Period period, String& note) {
@@ -242,5 +249,52 @@ int Hotel::getNumOfRooms() {
 
 int Hotel::getRoomNum(int numOfRoom)
 {
-	return rooms[numOfRoom-1].getRoomNum();
+	return rooms[numOfRoom - 1].getRoomNum();
+}
+
+void Hotel::setOneRoomReserved(bool reserved)
+{
+	this->oneRoomIsReserved = reserved;
+}
+
+
+ofstream& Hotel::saveHotel(ofstream& out) const
+{
+	out << "Hotel " << this->name << endl;
+	out << "Rooms: " << this->numOfRooms << endl << endl;
+
+	for (size_t i = 0; i < this->numOfRooms; i++) {
+		this->rooms[i].saveRoom(out);
+	}
+
+	return out;
+}
+
+ifstream& Hotel::loadHotel(ifstream& in)
+{
+	// For the num of rooms
+	int size = 0;
+
+	in.seekg(6, ios::cur);
+	in >> name;
+	in.seekg(7, ios::cur);
+	in >> size;
+	in.seekg(2, ios::cur);
+
+	for (size_t i = 0; i < size; i++) {
+		if (i == 0) {
+			in.seekg(2, ios::cur);
+			Room room;
+			room.loadRoom(in);
+			this->rooms[i] = room;
+		}
+		else {
+			Room room;
+			room.loadRoom(in);
+			this->rooms[i] = room;
+		}
+	}
+
+
+	return in;
 }

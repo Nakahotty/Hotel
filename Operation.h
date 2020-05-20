@@ -29,8 +29,8 @@ private:
 	}
 public:
 	Operation(Hotel& hotel, int& numOfRoom, int& numOfGuests, String& note, Period& period,
-			  String& periodString, int& year1, int& day1, int& month1, int& year2, int& day2, int& month2,
-			  String& date1String, String& date2String, Date& date1, Date& date2, int& beds);
+		String& periodString, int& year1, int& day1, int& month1, int& year2, int& day2, int& month2,
+		String& date1String, String& date2String, Date& date1, Date& date2, int& beds);
 
 	// Enter commands
 	static void enterComand(String& cmd);
@@ -63,6 +63,6 @@ public:
 	static void initPeriodFromCommand(Period& period,
 		int& year1, int& day1, int& month1, Date& date1, String& dateString1,
 		int& year2, int& day2, int& month2, Date& date2, String& dateString2);
-	
+
 	static void initDateFromCommand(Period& period, String& periodString, Date& date, int& year, int& day, int& month);
 };

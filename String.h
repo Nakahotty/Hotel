@@ -29,6 +29,9 @@ public:
     bool contains(String& other);
     void toLower();
     int toInteger();
+    char* c_str() {
+        return this->str;
+    }
 };
 
 std::ostream& operator<< (std::ostream& out, String s);

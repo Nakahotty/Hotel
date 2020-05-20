@@ -55,7 +55,7 @@ int Room::getRoomGuests() const
 	return this->roomGuests;
 }
 
-void Room::addGuests(const int numOfGuests){
+void Room::addGuests(const int numOfGuests) {
 	this->roomGuests += numOfGuests;
 }
 
@@ -63,7 +63,6 @@ bool Room::isFreeOnDate(Period period)
 {
 	Date date = period.getDate();
 	int size = scheduledDates.getSize();
-
 	for (int i = 0; i < size; i++) {
 		if (date == scheduledDates[i]) {
 			return false;
@@ -78,7 +77,7 @@ int Room::getBeds() const
 	return this->beds;
 }
 
-Vector<Date>& Room::getScheduledDates() 
+Vector<Date>& Room::getScheduledDates()
 {
 	return this->scheduledDates;
 }
@@ -88,12 +87,12 @@ void Room::scheduleOnDates(Period& period)
 	if (!isFreeDuringPeriod(period)) {
 		cout << "The room is taken during this period!" << endl;
 		return;
-	} 
+	}
 
 	Vector<Date> dates = period.getDatesInPeriod();
 	int daysBetweenPeriod = period.countDaysBetween();
 
-	for (size_t i = 0; i < daysBetweenPeriod; i++) {
+	for (size_t i = 0; i <= daysBetweenPeriod; i++) {
 		this->scheduledDates.push_back(dates[i]);
 	}
 
@@ -117,5 +116,82 @@ bool Room::isFreeDuringPeriod(Period& period)
 	}
 
 	return true;
+}
+
+ofstream& Room::saveScheduledDates(ofstream& out) const
+{
+	int size = scheduledDates.getSize();
+
+	for (size_t i = 0; i < size; i++) {
+		scheduledDates[i].saveDate(out);
+	}
+
+	return out;
+}
+
+ifstream& Room::loadScheduledDates(ifstream& in)
+{
+	int size = scheduledDates.getSize();
+
+	for (size_t i = 0; i < size; i++) {
+		scheduledDates[i].loadDate(in);
+	}
+
+	return in;
+}
+
+ofstream& Room::saveRoom(ofstream& out) const
+{
+	int size = scheduledDates.getSize();
+
+	out << "Room number: " << roomNum << endl;
+	out << "Guests: " << roomGuests << endl;
+	out << "Is free: " << free << endl;
+	out << "Beds: " << beds << endl;
+	out << "Scheduled dates: " << size << endl;
+
+	for (size_t i = 0; i < size; i++) {
+		scheduledDates[i].saveDate(out);
+	}
+
+	return out;
+}
+
+ifstream& Room::loadRoom(ifstream& in)
+{
+	int size = 0;
+
+	in.seekg(13, ios::cur); // for room number
+	in >> roomNum;
+	in.seekg(9, ios::cur); // for guests
+	in >> roomGuests;
+	in.seekg(10, ios::cur); // for free
+	in >> free;
+	in.seekg(7, ios::cur); // for beds
+	in >> beds;
+	in.seekg(18, ios::cur); // for scheduled dates
+	in >> size;
+	in.seekg(2, ios::cur); // for endline
+
+	for (int i = 0; i < size; i++) {
+		if (i == 0) {
+			Date date;
+			date.loadDate(in);
+			this->scheduledDates.push_back(date);
+		}
+		else {
+			in.seekg(2, ios::cur);
+			Date date;
+			date.loadDate(in);
+			this->scheduledDates.push_back(date);
+		}
+
+		if (i == (size - 1)) {
+			in.seekg(2, ios::cur);
+		}
+	}
+
+
+	return in;
 }
 

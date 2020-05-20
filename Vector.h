@@ -48,7 +48,7 @@ public:
 	Vector();
 	Vector(const Vector& other);
 	Vector& operator=(const Vector& other);
-	~Vector(); 
+	~Vector();
 
 	void push_back(const T& el);
 	void pop_back();
@@ -63,6 +63,7 @@ public:
 	int getCapacity() const;
 	bool isEmpty() const;
 	void print() const;
+	void clear();
 
 	Vector<T> operator +(const Vector& other);
 	Vector<T>& operator +=(const Vector& other);
@@ -240,6 +241,14 @@ void Vector<T>::print() const
 	}
 
 	cout << std::endl;
+}
+
+template<typename T>
+void Vector<T>::clear()
+{
+	data = nullptr;
+	size = 0;
+	capacity = 0;
 }
 
 template <typename T>

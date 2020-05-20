@@ -1,4 +1,4 @@
-	#include "Operation.h"
+#include "Operation.h"
 
 void Operation::splitByTwo(const String& cmd, String& first, String& second) {
 	int spaceIndex = 0;
@@ -26,7 +26,7 @@ void Operation::splitByTwo(const String& cmd, String& first, String& second) {
 		int copyCounterFirstWord = counterFirstWord; // For later 
 
 		// Storing the first command
-		
+
 
 		for (size_t i = counterFirstWord; cmd[i] != ' '; i++) {
 			first = first + cmd[i];
@@ -58,13 +58,13 @@ void Operation::splitByTwo(const String& cmd, String& first, String& second) {
 	else {
 		cout << "Missing arguments!" << endl;
 	}
-	
+
 }
 
-Operation::Operation(Hotel& hotel, int& numOfRoom, int& numOfGuests, String& note, Period& period, String& periodString, 
-	                 int& year1, int& day1, int& month1, int& year2, int& day2, int& month2, String& date1String, 
-	                 String& date2String, Date& date1, Date& date2, int& beds) {
-	
+Operation::Operation(Hotel& hotel, int& numOfRoom, int& numOfGuests, String& note, Period& period, String& periodString,
+	int& year1, int& day1, int& month1, int& year2, int& day2, int& month2, String& date1String,
+	String& date2String, Date& date1, Date& date2, int& beds) {
+
 }
 
 void Operation::enterComand(String& cmd) {
@@ -130,9 +130,9 @@ void Operation::dateValidation(String& date, int& date_year, int& date_day, int&
 		}
 	}
 
-	
 
-	
+
+
 }
 
 bool Operation::isNumOfBedsValid(int& beds)
@@ -184,7 +184,7 @@ void Operation::enterNumOfRoom(int& numOfRoom)
 		cout << "Not allowed value of room!" << endl;
 		assert(false);
 	}
-		
+
 }
 
 void Operation::enterDate(Period& period, String& periodString, Date& date, int& year, int& day, int& month) {
@@ -201,9 +201,9 @@ void Operation::enterDate(Period& period, String& periodString, Date& date, int&
 	}
 }
 
-void Operation::clearStats(int& numOfRoom, Period& period, String& periodString, String& note, int& numOfGuests, 
-						   int& year1, int& day1, int& month1, Date& date1, String& dateString1,
-	                       int& year2, int& day2, int& month2, Date& date2, String& dateString2) {
+void Operation::clearStats(int& numOfRoom, Period& period, String& periodString, String& note, int& numOfGuests,
+	int& year1, int& day1, int& month1, Date& date1, String& dateString1,
+	int& year2, int& day2, int& month2, Date& date2, String& dateString2) {
 	numOfRoom = 0;
 	periodString = String();
 	note = String();
@@ -230,13 +230,13 @@ void Operation::initPeriod(Period& period, int& year1, int& day1, int& month1, D
 
 void Operation::storeDates(int& numOfRoom, Period& period)
 {
-	
+
 }
 
 void Operation::enterNote(String& note)
 {
 	cout << "Note" << endl;
-	cout << "$ "; cin >> note; 
+	cout << "$ "; cin >> note;
 }
 
 void Operation::enterNumOfGuets(int& numOfGuests)

@@ -4,10 +4,10 @@ class ConsoleEngine {
 private:
 	String cmd;
 	Vector<String> commands;
-	
+
 	// 13 commands
 	String commands_arr[13] = { "open", "close", "save", "saveas", "help", "exit",
-						        "checkin", "availability", "checkout", "report", "find", "find!", "unavailable" };
+								"checkin", "availability", "checkout", "report", "find", "find!", "unavailable" };
 
 	void initCommands() {
 		for (size_t i = 0; i < 13; i++) {
@@ -15,8 +15,8 @@ private:
 		}
 	}
 public:
-	ConsoleEngine() { 
-		initCommands(); 
+	ConsoleEngine() {
+		initCommands();
 	}
 
 	// Starting the hotel app
@@ -31,4 +31,8 @@ public:
 
 	// For switch
 	int checkOperation(String cmd);
+	bool is_empty(ifstream& pFile)
+	{
+		return pFile.peek() == ifstream::traits_type::eof();
+	}
 };

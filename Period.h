@@ -6,6 +6,9 @@ private:
 	Date from;
 	Date to;
 	Vector<Date> datesInPeriod;
+
+
+
 	int fromDateYear, toDateYear;
 	bool initializedCorrectly;
 
@@ -72,7 +75,7 @@ private:
 						}
 					}
 
-				} 
+				}
 			}
 			else {
 				initializedCorrectly = 0;
@@ -81,7 +84,7 @@ private:
 	}
 
 public:
-	Period() { 
+	Period() {
 		from = Date();
 		to = Date();
 		initializedCorrectly = 1;
@@ -98,7 +101,7 @@ public:
 		fromDateYear = from.getYear();
 		toDateYear = to.getYear();
 
-		
+
 		initDates();
 	}
 
@@ -115,7 +118,7 @@ public:
 	Date& getDate() {
 		return from;
 	}
-	
+
 	void addDefaultDate() {
 		datesInPeriod.push_back(Date());
 	}
@@ -145,7 +148,7 @@ public:
 		initializedCorrectly = correct;
 	}
 
-	bool wasInitializedCorrectly() const{
+	bool wasInitializedCorrectly() const {
 		return initializedCorrectly;
 	}
 
@@ -189,5 +192,32 @@ public:
 
 	bool operator !=(const Period& other) {
 		return !(*this == other);
+	}
+
+	ofstream& savePeriod(ofstream& out) {
+
+		from.saveDate(out);
+		to.saveDate(out);
+
+		int size = datesInPeriod.getSize();
+		for (size_t i = 0; i < size; i++) {
+			datesInPeriod[i].saveDate(out);
+		}
+
+		return out;
+	}
+
+	ifstream& loadPeriod(ifstream& in) {
+
+		from.loadDate(in);
+		to.loadDate(in);
+
+		int size = datesInPeriod.getSize();
+
+		for (size_t i = 0; i < size; i++) {
+			datesInPeriod[i].loadDate(in);
+		}
+
+		return in;
 	}
 };
