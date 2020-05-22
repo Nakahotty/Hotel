@@ -9,7 +9,7 @@ Room::Room() {
 	this->beds = rand() % 5 + 1;
 }
 
-Room::Room(const int roomNum, const int roomGuests, const bool free) {
+Room::Room(const size_t roomNum, const size_t roomGuests, const bool free) {
 	this->roomNum = roomNum;
 	this->roomGuests = roomGuests;
 	this->free = free;
@@ -45,12 +45,12 @@ void Room::setAvailability(bool availability)
 	this->free = availability;
 }
 
-int Room::getRoomNum() const
+size_t Room::getRoomNum() const
 {
 	return this->roomNum;
 }
 
-int Room::getRoomGuests() const
+size_t Room::getRoomGuests() const
 {
 	return this->roomGuests;
 }
@@ -62,8 +62,8 @@ void Room::addGuests(const int numOfGuests) {
 bool Room::isFreeOnDate(Period period)
 {
 	Date date = period.getDate();
-	int size = scheduledDates.getSize();
-	for (int i = 0; i < size; i++) {
+	size_t size = scheduledDates.getSize();
+	for (size_t i = 0; i < size; i++) {
 		if (date == scheduledDates[i]) {
 			return false;
 		}
@@ -72,7 +72,7 @@ bool Room::isFreeOnDate(Period period)
 	return true;
 }
 
-int Room::getBeds() const
+size_t Room::getBeds() const
 {
 	return this->beds;
 }
@@ -99,7 +99,7 @@ void Room::scheduleOnDates(Period& period)
 	this->setAvailability(0);
 }
 
-int Room::scheduledDatesSize()
+size_t Room::scheduledDatesSize()
 {
 	return scheduledDates.getSize();
 }
@@ -108,7 +108,7 @@ int Room::scheduledDatesSize()
 bool Room::isFreeDuringPeriod(Period& period)
 {
 	Vector<Date> dates = period.getDatesInPeriod();
-	int length = period.countDaysBetween();
+	size_t length = period.countDaysBetween();
 
 	for (size_t i = 0; i < length; i++) {
 		if (scheduledDates.contains(dates[i]))
@@ -120,7 +120,7 @@ bool Room::isFreeDuringPeriod(Period& period)
 
 ofstream& Room::saveScheduledDates(ofstream& out) const
 {
-	int size = scheduledDates.getSize();
+	size_t size = scheduledDates.getSize();
 
 	for (size_t i = 0; i < size; i++) {
 		scheduledDates[i].saveDate(out);
@@ -131,7 +131,7 @@ ofstream& Room::saveScheduledDates(ofstream& out) const
 
 ifstream& Room::loadScheduledDates(ifstream& in)
 {
-	int size = scheduledDates.getSize();
+	size_t size = scheduledDates.getSize();
 
 	for (size_t i = 0; i < size; i++) {
 		scheduledDates[i].loadDate(in);
@@ -142,7 +142,7 @@ ifstream& Room::loadScheduledDates(ifstream& in)
 
 ofstream& Room::saveRoom(ofstream& out) const
 {
-	int size = scheduledDates.getSize();
+	size_t size = scheduledDates.getSize();
 
 	out << "Room number: " << roomNum << endl;
 	out << "Guests: " << roomGuests << endl;
@@ -159,7 +159,7 @@ ofstream& Room::saveRoom(ofstream& out) const
 
 ifstream& Room::loadRoom(ifstream& in)
 {
-	int size = 0;
+	size_t size = 0;
 
 	in.seekg(13, ios::cur); // for room number
 	in >> roomNum;
@@ -173,7 +173,7 @@ ifstream& Room::loadRoom(ifstream& in)
 	in >> size;
 	in.seekg(2, ios::cur); // for endline
 
-	for (int i = 0; i < size; i++) {
+	for (size_t i = 0; i < size; i++) {
 		if (i == 0) {
 			Date date;
 			date.loadDate(in);

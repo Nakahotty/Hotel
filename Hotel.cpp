@@ -2,7 +2,7 @@
 
 Hotel::Hotel() {
 	this->guests = 0;
-	this->name = "NONE";
+	this->name = "Аtanas++";
 	this->date = Date(2020, 01, 05);
 
 	for (size_t i = 0; i < getNumOfRooms(); i++) {
@@ -10,11 +10,9 @@ Hotel::Hotel() {
 	}
 
 	this->note = "No note given";
-
-	// отвори поток към файла
 }
 
-Hotel::Hotel(const String name, Vector<Room> rooms, int guests, String note, const Date date) {
+Hotel::Hotel(const String name, Vector<Room> rooms, size_t guests, String note, const Date date) {
 	this->name = name;
 	this->rooms = rooms;
 	this->guests = guests;
@@ -36,30 +34,18 @@ Hotel Hotel::operator=(const Hotel& other)
 	return *this;
 }
 
-Hotel::~Hotel()
-{
-	// запазва данните
-}
-
 void Hotel::availability() {
-	/*cout << "List of free rooms (numbers): " << endl;
-
-	int numOfRooms = getNumOfRooms();
-	for (size_t i = 0; i < numOfRooms; i++) {
-		if (rooms[i].isFree()) {
-			cout << "Room " << rooms[i].getRoomNum() << " | ";
-		}
-	}*/
+	
 }
 
 void Hotel::availability(Period& period) {
-	int fromDateYear = period.getFromDateYear();
-	int toDateYear = period.getToDateYear();
+	size_t fromDateYear = period.getFromDateYear();
+	size_t toDateYear = period.getToDateYear();
 
 	if (fromDateYear != 1970 && toDateYear != 1970 && fromDateYear != 0 && toDateYear != 0) {
 		if (fromDateYear == toDateYear) {
 			cout << "Available room numbers: " << endl;
-			int numOfRooms = getNumOfRooms();
+			size_t numOfRooms = getNumOfRooms();
 
 			/*if (!oneRoomIsReserved) {
 				cout << "All rooms are free!" << endl;
@@ -79,13 +65,13 @@ void Hotel::availability(Period& period) {
 
 }
 
-void Hotel::checkout(int numOfRoom) {
+void Hotel::checkout(size_t numOfRoom) {
 	if (numOfRoom >= 1 && numOfRoom <= 100) {
 		if (!(rooms[numOfRoom - 1].isFree())) {
 			cout << "Checking out Room " << rooms[numOfRoom - 1].getRoomNum() << "..." << endl;
 			rooms[numOfRoom - 1].setAvailability(1);
 
-			int length = rooms[numOfRoom - 1].scheduledDatesSize();
+			size_t length = rooms[numOfRoom - 1].scheduledDatesSize();
 			for (size_t i = 0; i < length; i++) {
 				rooms[numOfRoom - 1].getScheduledDates().pop_back();
 			}
@@ -103,10 +89,10 @@ void Hotel::checkout(int numOfRoom) {
 
 }
 
-void Hotel::checkin(int numOfRoom, Period& period, String& note, int numOfGuests) {
-	int fromDateYear = period.getFromDateYear();
-	int toDateYear = period.getToDateYear();
-	int roomBeds = rooms[numOfRoom - 1].getBeds();
+void Hotel::checkin(size_t numOfRoom, Period& period, String& note, size_t numOfGuests) {
+	size_t fromDateYear = period.getFromDateYear();
+	size_t toDateYear = period.getToDateYear();
+	size_t roomBeds = rooms[numOfRoom - 1].getBeds();
 
 	if (fromDateYear != 1970 && toDateYear != 1970) {
 		if (fromDateYear == toDateYear) {
@@ -128,15 +114,15 @@ void Hotel::checkin(int numOfRoom, Period& period, String& note, int numOfGuests
 
 void Hotel::report(Period period)
 {
-	int fromDateYear = period.getFromDateYear();
-	int toDateYear = period.getToDateYear();
+	size_t fromDateYear = period.getFromDateYear();
+	size_t toDateYear = period.getToDateYear();
 
 	if (fromDateYear != 1970 && toDateYear != 1970) {
 		if (fromDateYear == toDateYear) {
 			cout << "Sending a report..." << endl;
 			cout << "Used rooms for a period of " << period.countDaysBetween() << " days" << endl;
 
-			int countFreeRooms = 0;
+			size_t countFreeRooms = 0;
 			for (size_t i = 0; i < numOfRooms; i++) {
 				if (rooms[i].scheduledDatesSize() == 0) {
 					countFreeRooms++;
@@ -155,9 +141,9 @@ void Hotel::report(Period period)
 
 }
 
-void Hotel::find(int beds, Period period) {
-	int fromDateYear = period.getFromDateYear();
-	int toDateYear = period.getToDateYear();
+void Hotel::find(size_t beds, Period period) {
+	size_t fromDateYear = period.getFromDateYear();
+	size_t toDateYear = period.getToDateYear();
 
 	if (fromDateYear != 1970 && toDateYear != 1970) {
 		if (fromDateYear == toDateYear) {
@@ -177,15 +163,15 @@ void Hotel::find(int beds, Period period) {
 
 }
 
-void Hotel::find_important(int beds, Period period) {
-	int fromDateYear = period.getFromDateYear();
-	int toDateYear = period.getToDateYear();
+void Hotel::find_important(size_t beds, Period period) {
+	size_t fromDateYear = period.getFromDateYear();
+	size_t toDateYear = period.getToDateYear();
 
 	if (fromDateYear != 1970 && toDateYear != 1970) {
 		if (fromDateYear == toDateYear) {
 			cout << "Finding a room for an important person..." << endl;
 
-			int foundRoomIndex = 0;
+			size_t foundRoomIndex = 0;
 
 			for (size_t i = 0; i < numOfRooms; i++) {
 				if (rooms[i].getBeds() == beds) {
@@ -212,9 +198,9 @@ void Hotel::find_important(int beds, Period period) {
 	}
 }
 
-void Hotel::unavailable(int numOfRoom, Period period, String& note) {
-	int fromDateYear = period.getFromDateYear();
-	int toDateYear = period.getToDateYear();
+void Hotel::unavailable(size_t numOfRoom, Period period, String& note) {
+	size_t fromDateYear = period.getFromDateYear();
+	size_t toDateYear = period.getToDateYear();
 
 	if (fromDateYear != 1970 && toDateYear != 1970) {
 		if (fromDateYear == toDateYear) {
@@ -237,17 +223,17 @@ void Hotel::printRooms() {
 	}
 }
 
-void Hotel::printRoom(int numOfRoom) {
+void Hotel::printRoom(size_t numOfRoom) {
 	rooms[numOfRoom - 1].print();
 	cout << endl;
 }
 
 
-int Hotel::getNumOfRooms() {
+size_t Hotel::getNumOfRooms() {
 	return this->numOfRooms;
 }
 
-int Hotel::getRoomNum(int numOfRoom)
+size_t Hotel::getRoomNum(size_t numOfRoom)
 {
 	return rooms[numOfRoom - 1].getRoomNum();
 }
@@ -273,7 +259,7 @@ ofstream& Hotel::saveHotel(ofstream& out) const
 ifstream& Hotel::loadHotel(ifstream& in)
 {
 	// For the num of rooms
-	int size = 0;
+	size_t size = 0;
 
 	in.seekg(6, ios::cur);
 	in >> name;

@@ -8,7 +8,7 @@ class Vector
 {
 private:
 	T* data;
-	int size, capacity;
+	size_t size, capacity;
 
 	void copy(const Vector& other)
 	{
@@ -16,7 +16,7 @@ private:
 
 		this->data = new T[capacity];
 
-		for (int i = 0; i < other.size; i++)
+		for (size_t i = 0; i < other.size; i++)
 		{
 			this->data[i] = other.data[i];
 		}
@@ -36,7 +36,7 @@ private:
 
 		T* bigger = new T[this->capacity];
 
-		for (int i = 0; i < this->size; i++)
+		for (size_t i = 0; i < this->size; i++)
 		{
 			bigger[i] = this->data[i];
 		}
@@ -55,20 +55,20 @@ public:
 	void push_front(const T& el);
 	void pop_front();
 	void push_at(const T& el, int position);
-	void pop_at(int position);
+	void pop_at(size_t position);
 	void pop_by_data(const T& el);
 	bool contains(const T& el);
 
-	int getSize() const;
-	int getCapacity() const;
+	size_t getSize() const;
+	size_t getCapacity() const;
 	bool isEmpty() const;
 	void print() const;
 	void clear();
 
 	Vector<T> operator +(const Vector& other);
 	Vector<T>& operator +=(const Vector& other);
-	T& operator [](int i);
-	const T& operator [] (int i) const;
+	T& operator [](size_t i);
+	const T& operator [] (size_t i) const;
 	bool operator==(const Vector& other);
 	bool operator!=(const Vector& other);
 };
@@ -121,7 +121,7 @@ void Vector<T>::pop_back()
 {
 	T* smaller = new T[this->capacity];
 
-	for (int i = 0; i < this->size - 1; i++)
+	for (size_t i = 0; i < this->size - 1; i++)
 	{
 		smaller[i] = this->data[i];
 	}
@@ -137,7 +137,7 @@ void Vector<T>::push_front(const T& el)
 	this->resize();
 	T* bigger = new T[this->size + 1];
 
-	for (int i = 0; i < this->size; i++)
+	for (size_t i = 0; i < this->size; i++)
 	{
 		bigger[i + 1] = this->data[i];
 	}
@@ -153,7 +153,7 @@ void Vector<T>::pop_front()
 {
 	T* smaller = new T[this->size + 1];
 
-	for (int i = 0; i < this->size; i++)
+	for (size_t i = 0; i < this->size; i++)
 	{
 		smaller[i] = this->data[i + 1];
 	}
@@ -170,7 +170,7 @@ void Vector<T>::push_at(const T& el, int position)
 
 	if (this->size >= position)
 	{
-		for (int i = this->size; i >= position; i--)
+		for (size_t i = this->size; i >= position; i--)
 		{
 			this->data[i] = this->data[i - 1];
 		}
@@ -183,9 +183,9 @@ void Vector<T>::push_at(const T& el, int position)
 }
 
 template <typename T>
-void Vector<T>::pop_at(int position)
+void Vector<T>::pop_at(size_t position)
 {
-	for (int i = position - 1; i < this->size; i++)
+	for (size_t i = position - 1; i < this->size; i++)
 	{
 		this->data[i] = this->data[i + 1];
 	}
@@ -206,7 +206,7 @@ void Vector<T>::pop_by_data(const T& el)
 template<typename T>
 bool Vector<T>::contains(const T& el)
 {
-	for (int i = 0; i < this->size; i++) {
+	for (size_t i = 0; i < this->size; i++) {
 		if (this->data[i] == el)
 			return true;
 	}
@@ -215,13 +215,13 @@ bool Vector<T>::contains(const T& el)
 }
 
 template <typename T>
-int Vector<T>::getSize() const
+size_t Vector<T>::getSize() const
 {
 	return this->size;
 }
 
 template <typename T>
-int Vector<T>::getCapacity() const
+size_t Vector<T>::getCapacity() const
 {
 	return this->capacity;
 }
@@ -235,7 +235,7 @@ bool Vector<T>::isEmpty() const
 template <typename T>
 void Vector<T>::print() const
 {
-	for (int i = 0; i < this->size; i++)
+	for (size_t i = 0; i < this->size; i++)
 	{
 		std::cout << this->data[i] << " ";
 	}
@@ -259,12 +259,12 @@ Vector<T> Vector<T>::operator +(const Vector<T>& other)
 	this->resize();
 	result.data = new T[this->capacity + other.capacity];
 
-	for (int i = 0; i < this->size; i++)
+	for (size_t i = 0; i < this->size; i++)
 	{
 		result[i] = this->data[i];
 	}
 
-	for (int i = 0; i < other.size; i++)
+	for (size_t i = 0; i < other.size; i++)
 	{
 		result[this->size + i] = other.data[i];
 	}
@@ -280,12 +280,12 @@ Vector<T>& Vector<T>::operator +=(const Vector& other)
 	this->resize();
 	T* bigger = new T[this->capacity];
 
-	for (int i = 0; i < this->size; i++)
+	for (size_t i = 0; i < this->size; i++)
 	{
 		bigger[i] = this->data[i];
 	}
 
-	for (int i = 0; i < other.size; i++)
+	for (size_t i = 0; i < other.size; i++)
 	{
 		bigger[this->size + i] = other.data[i];
 	}
@@ -298,13 +298,13 @@ Vector<T>& Vector<T>::operator +=(const Vector& other)
 }
 
 template <typename T>
-T& Vector<T>::operator [](int i)
+T& Vector<T>::operator [](size_t i)
 {
 	return data[i];
 }
 
 template <typename T>
-const T& Vector<T>::operator[] (int i) const
+const T& Vector<T>::operator[] (size_t i) const
 {
 	return data[i];
 }
@@ -315,7 +315,7 @@ bool Vector<T>::operator==(const Vector& other)
 	if (this->size != other.size)
 		return false;
 
-	for (int i = 0; i < this->size; i++)
+	for (size_t i = 0; i < this->size; i++)
 	{
 		if (this->data[i] != other.data[i])
 			return false;
@@ -333,7 +333,7 @@ bool Vector<T>::operator!=(const Vector& other)
 template <typename T>
 ostream& operator<<(ostream& stream, Vector<T> v)
 {
-	for (int i = 0; i < v.getSize(); i++)
+	for (size_t i = 0; i < v.getSize(); i++)
 	{
 		cout << v[i] << " ";
 	}

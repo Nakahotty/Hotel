@@ -1,97 +1,30 @@
 #pragma once
 #include <iostream>
 #include "String.h"
+#include "Vector.h"
 
 using namespace std;
 
 class Date {
 private:
-	int year, day, month;
-	int dateLength = 10;
+	size_t year, day, month;
+	size_t dateLength = 10;
 public:
-	Date() {
-		this->year = 1970;
-		this->day = 1;
-		this->month = 1;
-	}
+	Date();
+	Date(size_t year, size_t day, size_t month);
+	Date(const Date& other);
+	Date& operator=(const Date& other);
+	bool operator==(const Date& other);
 
-	Date(int year, int day, int month) {
-		this->year = year;
-		this->day = day;
-		this->month = month;
-	}
+	size_t getYear() const;
+	size_t getDay() const;
+	size_t getMonth() const;
 
-	Date(const Date& other) {
-		this->day = other.day;
-		this->month = other.month;
-		this->year = other.year;
-	}
-
-	Date& operator=(const Date& other) {
-		if (this != &other) {
-			this->year = other.year;
-			this->day = other.day;
-			this->month = other.month;
-		}
-
-		return *this;
-	}
-
-	bool operator==(const Date& other) {
-		return (this->year == other.year &&
-			this->month == other.month &&
-			this->day == other.day);
-	}
-
-	int getYear() const {
-		return this->year;
-	}
-
-	int getDay() const {
-		return this->day;
-	}
-
-	int getMonth() const {
-		return this->month;
-	}
-
-	void print() {
-		cout << this->year << "-" << this->day << "-" << this->month << endl;
-	}
-
-	void printHelper() const {
-		String dayWithZero = "";
-		String monthWithZero = "";
-
-		if (day >= 1 && day <= 9) {
-			dayWithZero = "0";
-		}
-
-		if (month >= 1 && month <= 9) {
-			monthWithZero = "0";
-		}
-
-		cout << dayWithZero << this->day << "-" << monthWithZero << this->month << " ";
-	}
-
-	int length() const {
-		return this->dateLength;
-	}
+	void print();
+	void printHelper() const;
+	size_t length() const;
 
 	// File input/output
-	ostream& saveDate(ostream& out) const {
-		out << this->year << "-" << this->day << "-" << this->month << endl;
-		return out;
-	}
-
-	ifstream& loadDate(ifstream& in) {
-		in >> this->year;
-		in.seekg(1, ios::cur);
-		in >> this->day;
-		in.seekg(1, ios::cur);
-		in >> this->month;
-
-
-		return in;
-	}
+	ostream& saveDate(ostream& out) const;
+	ifstream& loadDate(ifstream& in); 
 };

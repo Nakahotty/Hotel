@@ -7,9 +7,7 @@ private:
 	Date to;
 	Vector<Date> datesInPeriod;
 
-
-
-	int fromDateYear, toDateYear;
+	size_t fromDateYear, toDateYear;
 	bool initializedCorrectly;
 
 	void printDates() const {
@@ -30,7 +28,7 @@ private:
 	void initDates() {
 		if (fromDateYear == toDateYear) {
 
-			int countDays = countDaysBetween();
+			size_t countDays = countDaysBetween();
 
 			if (countDays >= 0) {
 				for (size_t i = 0; i <= countDays; i++) {
@@ -49,9 +47,9 @@ private:
 							break;
 						}
 
-						int dayOfStartDate = from.getDay();
-						int monthOfStartDate = from.getMonth();
-						int helper;
+						size_t dayOfStartDate = from.getDay();
+						size_t monthOfStartDate = from.getMonth();
+						size_t helper;
 
 						if (dayOfStartDate + i > 31) {
 							monthOfStartDate++;
@@ -67,11 +65,6 @@ private:
 						}
 						else {
 							datesInPeriod.push_back(Date(from.getYear(), dayOfStartDate + i, monthOfStartDate));
-
-							/*if (from == to) {
-								cout << "You reserved a room for 1 day!" << endl;
-								break;
-							}*/
 						}
 					}
 
@@ -84,140 +77,23 @@ private:
 	}
 
 public:
-	Period() {
-		from = Date();
-		to = Date();
-		initializedCorrectly = 1;
+	Period();
+	Period(Date date);
+	Period(Date _from, Date _to);
+	Period& operator=(const Period& other);
 
-		fromDateYear = from.getYear();
-		toDateYear = to.getYear();
+	Date& getDate();
+	void addDefaultDate();
+	bool checkAvailability();
+	const Vector<Date>& getDatesInPeriod();
+	size_t getFromDateYear() const;
+	size_t getToDateYear() const;
+	void setInitializedCorrectly(bool correct);
+	bool wasInitializedCorrectly() const;
+	size_t countDaysBetween();
 
-	};
-
-	Period(Date date) {
-		from = date;
-		to = date;
-
-		fromDateYear = from.getYear();
-		toDateYear = to.getYear();
-
-
-		initDates();
-	}
-
-	Period(Date _from, Date _to) {
-		from = _from;
-		to = _to;
-
-		fromDateYear = from.getYear();
-		toDateYear = to.getYear();
-
-		initDates();
-	}
-
-	Date& getDate() {
-		return from;
-	}
-
-	void addDefaultDate() {
-		datesInPeriod.push_back(Date());
-	}
-
-	bool checkAvailability() {
-		if (from.getYear() != to.getYear() ||
-			from.getMonth() < to.getMonth() - 1) {
-			cout << "Wrong input!" << endl;
-		}
-
-		return true;
-	}
-
-	const Vector<Date>& getDatesInPeriod() {
-		return datesInPeriod;
-	}
-
-	int getFromDateYear() const {
-		return from.getYear();
-	}
-
-	int getToDateYear() const {
-		return to.getYear();
-	}
-
-	void setInitializedCorrectly(bool correct) {
-		initializedCorrectly = correct;
-	}
-
-	bool wasInitializedCorrectly() const {
-		return initializedCorrectly;
-	}
-
-	int countDaysBetween() {
-		const int monthDays[12] = { 31, 28, 31, 30, 31, 30,
-									31, 31, 30, 31, 30, 31 };
-
-		// Count number of dates before date1
-		int countForFirstDate = from.getYear() * 365 + from.getDay();
-
-		// Add days for months in given date 
-		for (size_t i = 0; i < from.getMonth() - 1; i++)
-			countForFirstDate += monthDays[i];
-
-		// Count number of dates before date2
-		int countForSecondDate = to.getYear() * 365 + to.getDay();
-
-		// Add days for months in given date 
-		for (size_t i = 0; i < to.getMonth() - 1; i++)
-			countForSecondDate += monthDays[i];
-
-		// Difference between the two is the num of days
-		return countForSecondDate - countForFirstDate;
-	}
-
-	Period& operator=(const Period& other) {
-		if (this != &other) {
-			datesInPeriod = other.datesInPeriod;
-			from = other.from;
-			to = other.to;
-		}
-
-		return *this;
-	}
-
-	bool operator ==(const Period& other) {
-		return from.getYear() == to.getYear() &&
-			from.getDay() == to.getDay() &&
-			from.getMonth() == to.getMonth();
-	}
-
-	bool operator !=(const Period& other) {
-		return !(*this == other);
-	}
-
-	ofstream& savePeriod(ofstream& out) {
-
-		from.saveDate(out);
-		to.saveDate(out);
-
-		int size = datesInPeriod.getSize();
-		for (size_t i = 0; i < size; i++) {
-			datesInPeriod[i].saveDate(out);
-		}
-
-		return out;
-	}
-
-	ifstream& loadPeriod(ifstream& in) {
-
-		from.loadDate(in);
-		to.loadDate(in);
-
-		int size = datesInPeriod.getSize();
-
-		for (size_t i = 0; i < size; i++) {
-			datesInPeriod[i].loadDate(in);
-		}
-
-		return in;
-	}
+	bool operator ==(const Period& other);
+	bool operator !=(const Period& other);
+	ofstream& savePeriod(ofstream& out);
+	ifstream& loadPeriod(ifstream& in);
 };

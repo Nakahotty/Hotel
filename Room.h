@@ -8,10 +8,10 @@
 
 class Room {
 private:
-	int roomNum;
-	int roomGuests;
+	size_t roomNum;
+	size_t roomGuests;
 	bool free;
-	int beds;
+	size_t beds;
 	Vector<Date> scheduledDates;
 
 	void copy(const Room& other) {
@@ -23,22 +23,22 @@ private:
 	}
 public:
 	Room();
-	Room(const int roomNum, const int RoomGuests, const bool free);
+	Room(const size_t roomNum, const size_t RoomGuests, const bool free);
 	Room(const Room& other);
 	Room operator = (const Room& other);
 	void print();
 
 	bool isFree() const;
 	void setAvailability(bool free);
-	int getRoomNum() const;
-	int getRoomGuests() const;
+	size_t getRoomNum() const;
+	size_t getRoomGuests() const;
 	void addGuests(const int numOfGuests);
 	bool isFreeOnDate(Period period);
-	int getBeds() const;
+	size_t getBeds() const;
 	Vector<Date>& getScheduledDates();
 
 	void scheduleOnDates(Period& period);
-	int scheduledDatesSize();
+	size_t scheduledDatesSize();
 	bool isFreeDuringPeriod(Period& period);
 
 	ofstream& saveScheduledDates(ofstream& out) const;
